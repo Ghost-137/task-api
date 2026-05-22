@@ -8,7 +8,9 @@ import com.mehedi.task_api.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +44,16 @@ public class ProjectController {
     public ProjectDTO createProject(@RequestBody Project project) {
         Project savedProject = projectService.createProject(project);
         return ProjectMapper.toProjectDTO(savedProject);
+    }
+
+    @Operation(summary = "Delete a project", description = "Delete a project by its ID")
+    @DeleteMapping("/{id}")
+    public ProjectDTO deleteProject(@PathVariable Long id) {
+        
+        
+        Project currentProject = projectService.getProjectById(id);
+        projectService.deleteProject(id);
+        return ProjectMapper.toProjectDTO(currentProject);
     }
     
 }
